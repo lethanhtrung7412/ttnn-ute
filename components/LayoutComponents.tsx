@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { 
   PhoneCall, MessageCircle, Mail, Menu, Home, ChevronDown, MapPin, 
   CalendarCheck, Facebook, Globe, Book, GraduationCap, Monitor, Languages, 
@@ -8,7 +8,6 @@ import {
 
 export const Header: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const location = useLocation();
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
@@ -47,8 +46,6 @@ export const Header: React.FC = () => {
     { name: "HỌC LIỆU", path: "#", subMenu: [] },
   ];
 
-  const isActive = (path: string) => location.pathname === path;
-
   return (
     <>
       <div className="bg-white dark:bg-surface-dark border-b border-gray-200 dark:border-gray-700">
@@ -80,7 +77,7 @@ export const Header: React.FC = () => {
           </div>
         </div>
       </div>
-      <nav className="bg-primary sticky top-0 z-50 shadow-lg">
+      <nav className="bg-primary sticky top-0 z-[100] shadow-lg">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
             <button className="md:hidden text-white p-3">
@@ -88,7 +85,7 @@ export const Header: React.FC = () => {
             </button>
             <ul className="hidden md:flex space-x-1 text-white text-sm font-medium">
               <li>
-                <Link to="/" className={`block px-4 py-4 hover:bg-blue-800 transition flex items-center gap-1 ${isActive('/') ? 'bg-blue-800' : ''}`}>
+                <Link to="/" className="block px-4 py-4 hover:bg-white/10 transition flex items-center gap-1">
                   <Home size={18} />
                 </Link>
               </li>
@@ -96,7 +93,7 @@ export const Header: React.FC = () => {
                 <li key={item.name} className="relative group">
                   <Link 
                     to={item.path} 
-                    className={`block px-4 py-4 hover:bg-blue-800 transition flex items-center gap-1 ${isActive(item.path) || (item.subMenu && item.subMenu.some(sub => isActive(sub.path))) ? 'bg-blue-800' : ''}`}
+                    className="block px-4 py-4 hover:bg-white/10 transition flex items-center gap-1"
                   >
                     {item.name} {(item.subMenu && item.subMenu.length > 0 || item.name !== "GIỚI THIỆU") && <ChevronDown size={14} />}
                   </Link>
@@ -120,14 +117,14 @@ export const Header: React.FC = () => {
               <li>
                 <Link 
                   to="/contact" 
-                  className={`block px-4 py-4 hover:bg-blue-800 transition flex items-center gap-1 ${isActive('/contact') ? 'bg-blue-800' : ''}`}
+                  className="block px-4 py-4 hover:bg-white/10 transition flex items-center gap-1"
                 >
                   <MapPin size={16} /> LIÊN HỆ
                 </Link>
               </li>
             </ul>
             <button 
-              className="text-white p-2 hover:bg-blue-800 rounded-full transition" 
+              className="text-white p-2 hover:bg-white/10 rounded-full transition" 
               onClick={toggleDarkMode}
             >
               {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
