@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Breadcrumb, CourseSidebarBtn, CourseHero, CourseStats } from '../components/PageComponents';
 import { Sidebar } from '../components/LayoutComponents';
@@ -10,8 +11,8 @@ const EnglishCommunication: React.FC = () => {
     <>
       <Breadcrumb items={[{ label: 'Tiếng Anh' }, { label: 'Kỹ năng giao tiếp' }]} />
       <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-col lg:flex-row gap-8">
-          <div className="lg:w-1/4">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          <div className="lg:col-span-1">
             <div className="sticky top-24 space-y-8">
               <div className="bg-white dark:bg-surface-dark rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
                 <div className="p-4 bg-gray-50 dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
@@ -52,7 +53,7 @@ const EnglishCommunication: React.FC = () => {
             </div>
           </div>
           
-          <div className="lg:w-3/4">
+          <div className="lg:col-span-3">
             <div className="bg-white dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden mb-8 animate-fade-in-up">
               
               {/* Content for Cơ Bản */}

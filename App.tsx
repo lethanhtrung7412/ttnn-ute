@@ -1,6 +1,5 @@
-
 import React, { useEffect } from 'react';
-import { HashRouter, Routes, Route, useLocation } from 'react-router-dom';
+import * as ReactRouterDOM from 'react-router-dom';
 import { Header, Footer } from './components/LayoutComponents';
 import Home from './pages/Home';
 import Contact from './pages/Contact';
@@ -15,42 +14,44 @@ import Japanese from './pages/Japanese';
 import Chinese from './pages/Chinese';
 import LearningResources from './pages/LearningResources';
 
+const { Routes, Route, useLocation } = ReactRouterDOM;
+
 // Scroll to top on route change
 const ScrollToTop = () => {
   const { pathname } = useLocation();
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
-
   return null;
 };
 
 const App: React.FC = () => {
   return (
-    <HashRouter>
+    <div className="min-h-screen flex flex-col font-body">
       <ScrollToTop />
-      <div className="min-h-screen flex flex-col font-body">
-        <Header />
-        <main className="flex-grow">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/faculty" element={<Faculty />} />
-            <Route path="/overview" element={<Overview />} />
-            <Route path="/message" element={<Message />} />
-            <Route path="/english-communication" element={<EnglishCommunication />} />
-            <Route path="/ielts" element={<IeltsPreparation />} />
-            <Route path="/toeic" element={<ToeicPreparation />} />
-            <Route path="/vstep" element={<VstepPreparation />} />
-            <Route path="/japanese" element={<Japanese />} />
-            <Route path="/chinese" element={<Chinese />} />
-            <Route path="/learning-resources" element={<LearningResources />} />
-          </Routes>
-        </main>
-        <Footer />
-      </div>
-    </HashRouter>
+      <Header />
+      <main className="flex-grow">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/faculty" element={<Faculty />} />
+          <Route path="/overview" element={<Overview />} />
+          <Route path="/message" element={<Message />} />
+          <Route path="/english-communication" element={<EnglishCommunication />} />
+          <Route path="/ielts" element={<IeltsPreparation />} />
+          <Route path="/toeic" element={<ToeicPreparation />} />
+          <Route path="/vstep" element={<VstepPreparation />} />
+          <Route path="/japanese" element={<Japanese />} />
+          <Route path="/chinese" element={<Chinese />} />
+          <Route path="/learning-resources" element={<LearningResources />} />
+          <Route path="/news/:id" element={<Home />} />
+          <Route path="/resources/:slug" element={<LearningResources />} />
+          {/* Fallback route */}
+          <Route path="*" element={<Home />} />
+        </Routes>
+      </main>
+      <Footer />
+    </div>
   );
 };
 

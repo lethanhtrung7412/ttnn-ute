@@ -1,19 +1,87 @@
-
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import * as ReactRouterDOM from 'react-router-dom';
 import { 
   PhoneCall, MessageCircle, Mail, Menu, Home, ChevronDown, MapPin, 
-  CalendarCheck, Facebook, Globe, Book, GraduationCap, Monitor, Languages, 
-  Moon, Sun, Search, ArrowRight, Video, Newspaper, ChevronRight
+  CalendarCheck, Facebook, Globe, Book, GraduationCap, Moon, Sun, Search, 
+  ChevronRight, X, ChevronUp, Video
 } from 'lucide-react';
 import { ResourceTag } from '../types';
 
+const { Link: RouterLink, useLocation } = ReactRouterDOM;
+
+// Wrapper for Link to handle external links or placeholders if needed, 
+// though mostly we use it to wrap RouterLink for consistency with previous API
+const Link: React.FC<{ to: string; className?: string; children: React.ReactNode; onClick?: () => void }> = ({ to, className, children, onClick }) => {
+  const handleClick = (e: React.MouseEvent) => {
+    if (onClick) {
+      onClick();
+    }
+  };
+
+  if (to === '#' || to === '') {
+    return (
+      <a href="#" className={className} onClick={(e) => { e.preventDefault(); handleClick(e); }}>
+        {children}
+      </a>
+    );
+  }
+
+  return (
+    <RouterLink to={to} className={className} onClick={handleClick}>
+      {children}
+    </RouterLink>
+  );
+};
+
 export const Header: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [expandedMobileMenu, setExpandedMobileMenu] = useState<string | null>(null);
+  
+  const location = useLocation();
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isMobileMenuOpen]);
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
     document.documentElement.classList.toggle('dark');
+  };
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const toggleMobileSubMenu = (name: string) => {
+    if (expandedMobileMenu === name) {
+      setExpandedMobileMenu(null);
+    } else {
+      setExpandedMobileMenu(name);
+    }
+  };
+
+  const isActive = (path: string) => {
+    if (path === '#') return false;
+    if (path === '/' && location.pathname === '/') return true;
+    if (path !== '/' && location.pathname.startsWith(path)) return true;
+    return false;
+  };
+
+  const isParentActive = (item: any) => {
+    if (item.path !== '#' && isActive(item.path)) return true;
+    if (item.subMenu && item.subMenu.length > 0) {
+      return item.subMenu.some((sub: any) => isActive(sub.path));
+    }
+    return false;
   };
 
   const navItems = [
@@ -56,20 +124,20 @@ export const Header: React.FC = () => {
 
   return (
     <>
-      <div className="bg-white dark:bg-surface-dark border-b border-gray-200 dark:border-gray-700">
+      <div className="bg-white dark:bg-surface-dark border-b border-gray-200 dark:border-gray-700 relative z-[10]">
         <div className="container mx-auto px-4 py-3 flex flex-col md:flex-row justify-between items-center">
           <Link to="/" className="flex items-center gap-4 mb-4 md:mb-0">
             <img 
               alt="Logo HCMUTE" 
-              className="h-16 w-auto object-contain" 
+              className="h-12 md:h-16 w-auto object-contain" 
               src="https://lh3.googleusercontent.com/aida-public/AB6AXuASgQhjezd45G4yBnpKCMWp4L8BMeh0JwIilgPtKkkHcEP-dW-uNMN6zKQqYdXR6rJWLbQH6QuRh8wWMgaDIZ5YQpOZVmhUEW2TLhrvMLqHFzAWYSBRPbB1khTydXu_hu9R4uWw9nF78UGHHagVpavDyGazcEZ8AFr7bV8uoyQBwH5pcdacSF1M10n50pz-XxIzE3WDmmtck_k9XTqZ3vzv1-ZDGY4_cvm6OOm9ixi_zTZPLLXdgkJcj-4lY_0jZ-j6t_CGpE-TMw3s" 
             />
-            <div>
-              <h1 className="text-xs font-bold text-primary tracking-wider uppercase">Trường Đại Học Sư Phạm Kỹ Thuật TP. Hồ Chí Minh</h1>
-              <h2 className="text-2xl font-bold text-secondary dark:text-red-400 uppercase tracking-tight">Trung Tâm Ngoại Ngữ</h2>
+            <div className="text-center md:text-left">
+              <h1 className="text-[10px] md:text-xs font-bold text-primary tracking-wider uppercase">Trường Đại Học Sư Phạm Kỹ Thuật TP. Hồ Chí Minh</h1>
+              <h2 className="text-xl md:text-2xl font-bold text-secondary dark:text-red-400 uppercase tracking-tight">Trung Tâm Ngoại Ngữ</h2>
             </div>
           </Link>
-          <div className="flex flex-col items-end text-sm text-text-sub-light dark:text-text-sub-dark space-y-1">
+          <div className="hidden md:flex flex-col items-end text-sm text-text-sub-light dark:text-text-sub-dark space-y-1">
             <div className="flex items-center gap-2">
               <PhoneCall size={16} className="text-primary" />
               <span>0765 080 182</span>
@@ -88,12 +156,21 @@ export const Header: React.FC = () => {
       <nav className="bg-primary sticky top-0 z-[100] shadow-lg">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
-            <button className="md:hidden text-white p-3">
-              <Menu size={24} />
+            {/* Mobile Menu Button */}
+            <button 
+              className="md:hidden text-white p-3 hover:bg-white/10 rounded transition" 
+              onClick={toggleMobileMenu}
+            >
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
+
+            {/* Desktop Navigation */}
             <ul className="hidden md:flex space-x-1 text-white text-sm font-medium">
               <li>
-                <Link to="/" className="block px-4 py-4 hover:bg-white/10 transition flex items-center gap-1">
+                <Link 
+                  to="/" 
+                  className={`block px-4 py-4 hover:bg-white/10 transition flex items-center gap-1 ${isActive('/') ? 'bg-white/20' : ''}`}
+                >
                   <Home size={18} />
                 </Link>
               </li>
@@ -101,18 +178,18 @@ export const Header: React.FC = () => {
                 <li key={item.name} className="relative group">
                   <Link 
                     to={item.path} 
-                    className="block px-4 py-4 hover:bg-white/10 transition flex items-center gap-1"
+                    className={`block px-4 py-4 hover:bg-white/10 transition flex items-center gap-1 ${isParentActive(item) ? 'bg-white/20 font-bold' : ''}`}
                   >
                     {item.name} {(item.subMenu && item.subMenu.length > 0) && <ChevronDown size={14} />}
                   </Link>
-                  {/* Dropdown Menu */}
+                  {/* Desktop Dropdown Menu */}
                   {item.subMenu && item.subMenu.length > 0 && (
                     <ul className="absolute left-0 top-full w-60 bg-white dark:bg-surface-dark shadow-xl rounded-b-md invisible opacity-0 translate-y-2 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 z-50 border-t-4 border-secondary">
                       {item.subMenu.map((sub, index) => (
                         <li key={index}>
                           <Link
                             to={sub.path}
-                            className="block px-4 py-3 text-text-main-light dark:text-text-main-dark hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-blue-400 border-b border-gray-100 dark:border-gray-700 last:border-0 text-sm font-normal"
+                            className={`block px-4 py-3 hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-blue-400 border-b border-gray-100 dark:border-gray-700 last:border-0 text-sm font-normal ${isActive(sub.path) ? 'text-primary font-bold bg-blue-50 dark:bg-gray-800' : 'text-text-main-light dark:text-text-main-dark'}`}
                           >
                             {sub.name}
                           </Link>
@@ -125,12 +202,13 @@ export const Header: React.FC = () => {
               <li>
                 <Link 
                   to="/contact" 
-                  className="block px-4 py-4 hover:bg-white/10 transition flex items-center gap-1"
+                  className={`block px-4 py-4 hover:bg-white/10 transition flex items-center gap-1 ${isActive('/contact') ? 'bg-white/20 font-bold' : ''}`}
                 >
                   <MapPin size={16} /> LIÊN HỆ
                 </Link>
               </li>
             </ul>
+
             <button 
               className="text-white p-2 hover:bg-white/10 rounded-full transition" 
               onClick={toggleDarkMode}
@@ -140,6 +218,105 @@ export const Header: React.FC = () => {
           </div>
         </div>
       </nav>
+
+      {/* Mobile Menu Overlay - Full Screen */}
+      {isMobileMenuOpen && (
+        <div className="fixed inset-0 z-[200] bg-zinc-950 text-white flex flex-col animate-fade-in-up">
+          {/* Menu Header */}
+          <div className="flex items-center justify-between p-4 border-b border-white/10 bg-zinc-900">
+             <div className="flex items-center gap-2">
+                <span className="font-bold text-lg uppercase tracking-wider text-primary">Menu</span>
+             </div>
+             <button 
+                onClick={toggleMobileMenu}
+                className="p-2 bg-white/10 rounded-full hover:bg-white/20 transition text-white"
+             >
+                <X size={24} />
+             </button>
+          </div>
+          
+          {/* Menu Items */}
+          <div className="flex-1 overflow-y-auto">
+             <ul className="flex flex-col text-sm font-medium">
+                <li>
+                  <Link 
+                    to="/" 
+                    className={`block px-6 py-5 border-b border-white/5 hover:bg-white/5 transition flex items-center gap-3 text-base ${isActive('/') ? 'text-primary bg-white/5' : ''}`}
+                    onClick={toggleMobileMenu}
+                  >
+                    <Home size={20} className={isActive('/') ? "text-primary" : "text-gray-400"} /> Trang chủ
+                  </Link>
+                </li>
+                {navItems.map((item, index) => (
+                  <li key={index} className="border-b border-white/5">
+                    <div 
+                      className={`flex justify-between items-center px-6 py-5 hover:bg-white/5 transition cursor-pointer text-base ${isParentActive(item) ? 'text-white' : 'text-gray-300'}`}
+                      onClick={() => {
+                        if (item.subMenu && item.subMenu.length > 0) {
+                          toggleMobileSubMenu(item.name);
+                        }
+                      }}
+                    >
+                      <span className="flex items-center gap-3">
+                         <span className={isParentActive(item) ? "text-primary" : ""}>{item.name}</span>
+                      </span>
+                      {item.subMenu && item.subMenu.length > 0 && (
+                        expandedMobileMenu === item.name ? <ChevronUp size={18} className="text-gray-400" /> : <ChevronDown size={18} className="text-gray-400" />
+                      )}
+                    </div>
+                    
+                    {/* Mobile Submenu */}
+                    {item.subMenu && item.subMenu.length > 0 && expandedMobileMenu === item.name && (
+                      <ul className="bg-zinc-900 border-t border-white/5">
+                        {item.subMenu.map((sub, subIndex) => (
+                          <li key={subIndex}>
+                            <Link
+                              to={sub.path}
+                              className={`block pl-10 pr-6 py-4 hover:text-white hover:bg-white/5 transition text-sm border-l-4 ${isActive(sub.path) ? 'border-primary text-white bg-white/5' : 'border-transparent text-gray-400'}`}
+                              onClick={toggleMobileMenu}
+                            >
+                              {sub.name}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </li>
+                ))}
+                <li>
+                  <Link 
+                    to="/contact" 
+                    className={`block px-6 py-5 hover:bg-white/5 transition flex items-center gap-3 text-base ${isActive('/contact') ? 'text-primary bg-white/5' : ''}`}
+                    onClick={toggleMobileMenu}
+                  >
+                    <MapPin size={20} className={isActive('/contact') ? "text-primary" : "text-gray-400"} /> LIÊN HỆ
+                  </Link>
+                </li>
+             </ul>
+          </div>
+
+          {/* Menu Footer (Contact Info) */}
+          <div className="p-6 border-t border-white/10 bg-zinc-900">
+             <div className="space-y-3 text-sm text-gray-400">
+                <div className="flex items-center gap-3">
+                   <PhoneCall size={16} className="text-primary" />
+                   <span>Hotline: 0765 080 182</span>
+                </div>
+                <div className="flex items-center gap-3">
+                   <Mail size={16} className="text-primary" />
+                   <span>ttnn@hcmute.edu.vn</span>
+                </div>
+             </div>
+             <div className="mt-4 pt-4 border-t border-white/10 flex justify-between items-center">
+                 <span className="text-xs text-gray-500">© 2025 HCMUTE</span>
+                 <div className="flex gap-3">
+                    <a href="#" className="text-gray-400 hover:text-white transition"><Facebook size={18} /></a>
+                    <a href="#" className="text-gray-400 hover:text-white transition"><Globe size={18} /></a>
+                 </div>
+             </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };
@@ -233,7 +410,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   return (
     <div className={`space-y-8 ${className}`}>
-      <div className={`bg-white dark:bg-surface-dark p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 ${isSticky ? 'sticky top-24' : ''}`}>
+      <div className={`bg-white dark:bg-surface-dark p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 ${isSticky ? 'lg:sticky lg:top-24' : ''}`}>
         <h3 className="font-bold text-lg mb-4 text-text-main-light dark:text-text-main-dark flex items-center gap-2 border-l-4 border-primary pl-3">
           {title}
         </h3>

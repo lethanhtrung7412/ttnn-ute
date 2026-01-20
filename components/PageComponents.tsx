@@ -1,24 +1,37 @@
-
 import React from 'react';
-import { Link } from 'react-router-dom';
+import * as ReactRouterDOM from 'react-router-dom';
 import { 
   ArrowRight, Clock, Eye, ChevronRight, CheckCircle, 
   MapPin, Phone, Mail, Facebook, ChevronsRight
 } from 'lucide-react';
 import { NewsItem, FacultyMember, LearningResource } from '../types';
 
+const { Link: RouterLink } = ReactRouterDOM;
+
+// Local Link component wrapper
+const Link: React.FC<{ to: string; className?: string; children: React.ReactNode }> = ({ to, className, children }) => {
+  if (to === '#' || to === '') {
+    return <a href="#" className={className} onClick={(e) => e.preventDefault()}>{children}</a>;
+  }
+  return (
+    <RouterLink to={to} className={className}>
+      {children}
+    </RouterLink>
+  );
+};
+
 interface BreadcrumbProps {
   items: { label: string; path?: string }[];
 }
 
 export const Breadcrumb: React.FC<BreadcrumbProps> = ({ items }) => (
-  <div className="bg-white dark:bg-surface-dark border-b border-gray-200 dark:border-gray-700 py-4 shadow-sm">
+  <div className="bg-white dark:bg-surface-dark border-b border-gray-200 dark:border-gray-700 py-4 shadow-sm overflow-x-auto whitespace-nowrap">
     <div className="container mx-auto px-4">
       <div className="flex items-center text-sm text-text-sub-light dark:text-text-sub-dark">
         <Link to="/" className="hover:text-primary">Trang chủ</Link>
         {items.map((item, index) => (
           <React.Fragment key={index}>
-            <ChevronRight size={12} className="mx-2" />
+            <ChevronRight size={12} className="mx-2 flex-shrink-0" />
             {item.path ? (
               <Link to={item.path} className="hover:text-primary">{item.label}</Link>
             ) : (
@@ -32,7 +45,7 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({ items }) => (
 );
 
 export const NewsCard: React.FC<{ news: NewsItem }> = ({ news }) => (
-  <div className="bg-white dark:bg-surface-dark rounded-xl shadow-md overflow-hidden hover:shadow-xl transition group border border-gray-100 dark:border-gray-700">
+  <div className="bg-white dark:bg-surface-dark rounded-xl shadow-md overflow-hidden hover:shadow-xl transition group border border-gray-100 dark:border-gray-700 flex flex-col">
     <div className="h-48 overflow-hidden">
       <img 
         src={news.image} 
@@ -115,37 +128,39 @@ export const ResourceCard: React.FC<{ resource: LearningResource }> = ({ resourc
 );
 
 export const SchematicMap: React.FC = () => (
-  <div className="bg-[#d9e8fb] dark:bg-slate-900 p-8 rounded-xl border border-gray-200 dark:border-gray-700 relative schematic-map overflow-hidden h-[450px]">
-    <div className="absolute left-10 top-0 bottom-0 w-24 bg-white dark:bg-slate-800 border-x border-blue-100 flex items-center justify-center">
-      <span className="[writing-mode:vertical-lr] rotate-180 text-sm font-medium text-slate-600 dark:text-slate-400">Xa lộ Hà Nội</span>
-    </div>
-    <div className="absolute left-[3.25rem] top-32 text-center text-xs font-bold text-slate-800 dark:text-white z-10">
-        Ngã 4<br/>Thủ Đức
-    </div>
-    <div className="absolute left-0 top-32 right-0 h-24 bg-white dark:bg-slate-800 border-y border-blue-100 flex items-center justify-center">
-      <span className="ml-40 text-sm font-medium text-slate-600 dark:text-slate-400">Đường Võ Văn Ngân</span>
-    </div>
-    <div className="absolute right-10 top-32 flex items-center gap-4 h-24 z-10">
-      <div className="text-primary flex items-center">
-        <ArrowRight size={32} />
+  <div className="bg-[#d9e8fb] dark:bg-slate-900 p-4 md:p-8 rounded-xl border border-gray-200 dark:border-gray-700 relative overflow-x-auto">
+    <div className="schematic-map relative overflow-hidden h-[450px] min-w-[600px] mx-auto">
+      <div className="absolute left-10 top-0 bottom-0 w-24 bg-white dark:bg-slate-800 border-x border-blue-100 flex items-center justify-center">
+        <span className="[writing-mode:vertical-lr] rotate-180 text-sm font-medium text-slate-600 dark:text-slate-400">Xa lộ Hà Nội</span>
       </div>
-      <div className="border border-slate-400 bg-white px-4 py-2 text-sm font-bold shadow-sm">
-          Chợ<br/>Thủ Đức
+      <div className="absolute left-[3.25rem] top-32 text-center text-xs font-bold text-slate-800 dark:text-white z-10">
+          Ngã 4<br/>Thủ Đức
       </div>
-    </div>
-    <div className="absolute left-1/3 top-[250px] w-2/3 flex flex-col items-start gap-4">
-      <div className="flex gap-1 items-start">
-        <div className="w-16 h-20 bg-[#c7e5fb] border border-blue-200"></div>
-        <div className="w-16 h-20 bg-[#3b82f6] border border-blue-600 relative">
-          <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[15px] border-l-transparent border-r-[15px] border-r-transparent border-t-[30px] border-t-[#3b82f6]"></div>
+      <div className="absolute left-0 top-32 right-0 h-24 bg-white dark:bg-slate-800 border-y border-blue-100 flex items-center justify-center">
+        <span className="ml-40 text-sm font-medium text-slate-600 dark:text-slate-400">Đường Võ Văn Ngân</span>
+      </div>
+      <div className="absolute right-10 top-32 flex items-center gap-4 h-24 z-10">
+        <div className="text-primary flex items-center">
+          <ArrowRight size={32} />
         </div>
-        <div className="w-24 h-20 bg-[#ffe7d9] border border-orange-100"></div>
+        <div className="border border-slate-400 bg-white px-4 py-2 text-sm font-bold shadow-sm">
+            Chợ<br/>Thủ Đức
+        </div>
       </div>
-      <div className="mt-8 ml-[-60px] bg-[#3b82f6] text-white px-8 py-4 rounded-[40px] border-2 border-orange-700 shadow-xl text-center z-20">
-        <p className="font-bold text-lg leading-tight">Trung Tâm<br/>Ngoại ngữ</p>
-      </div>
-      <div className="absolute right-10 top-16 bg-[#deeaf7] dark:bg-slate-800 border border-blue-300 dark:border-slate-600 p-6 w-80 text-center shadow-sm">
-        <p className="text-primary dark:text-blue-400 font-bold">Trường Đại học<br/>Sư phạm Kỹ thuật<br/>Thành phố Hồ Chí Minh</p>
+      <div className="absolute left-1/3 top-[250px] w-2/3 flex flex-col items-start gap-4">
+        <div className="flex gap-1 items-start">
+          <div className="w-16 h-20 bg-[#c7e5fb] border border-blue-200"></div>
+          <div className="w-16 h-20 bg-[#3b82f6] border border-blue-600 relative">
+            <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[15px] border-l-transparent border-r-[15px] border-r-transparent border-t-[30px] border-t-[#3b82f6]"></div>
+          </div>
+          <div className="w-24 h-20 bg-[#ffe7d9] border border-orange-100"></div>
+        </div>
+        <div className="mt-8 ml-[-60px] bg-[#3b82f6] text-white px-8 py-4 rounded-[40px] border-2 border-orange-700 shadow-xl text-center z-20">
+          <p className="font-bold text-lg leading-tight">Trung Tâm<br/>Ngoại ngữ</p>
+        </div>
+        <div className="absolute right-10 top-16 bg-[#deeaf7] dark:bg-slate-800 border border-blue-300 dark:border-slate-600 p-6 w-80 text-center shadow-sm">
+          <p className="text-primary dark:text-blue-400 font-bold">Trường Đại học<br/>Sư phạm Kỹ thuật<br/>Thành phố Hồ Chí Minh</p>
+        </div>
       </div>
     </div>
   </div>
@@ -162,9 +177,9 @@ export const ContactInfoItem: React.FC<ContactInfoItemProps> = ({ icon, title, c
     <div className="w-12 h-12 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-primary flex-shrink-0">
       {icon}
     </div>
-    <div>
+    <div className="min-w-0">
       <h3 className="font-bold text-lg mb-1">{title}</h3>
-      <div className="text-sm text-text-sub-light dark:text-text-sub-dark">{children}</div>
+      <div className="text-sm text-text-sub-light dark:text-text-sub-dark break-words">{children}</div>
     </div>
   </div>
 );
@@ -198,9 +213,9 @@ interface CourseHeroProps {
 export const CourseHero: React.FC<CourseHeroProps> = ({ image, badge, title, subtitle }) => (
   <div className="relative h-[300px] md:h-[350px]">
     <img alt={title} className="w-full h-full object-cover" src={image} />
-    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent flex flex-col justify-end p-8 md:p-12">
+    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent flex flex-col justify-end p-6 md:p-12">
       <span className="bg-secondary text-white px-3 py-1 rounded-full text-xs font-bold w-fit mb-4 uppercase tracking-wider">{badge}</span>
-      <h2 className="text-3xl md:text-4xl font-bold text-white uppercase mb-2 leading-tight">{title}</h2>
+      <h2 className="text-2xl md:text-4xl font-bold text-white uppercase mb-2 leading-tight">{title}</h2>
       <p className="text-blue-100 max-w-2xl text-sm md:text-base">{subtitle}</p>
     </div>
   </div>
@@ -213,7 +228,7 @@ interface CourseStatsProps {
 }
 
 export const CourseStats: React.FC<CourseStatsProps> = ({ credits, duration, level }) => (
-  <div className="grid grid-cols-3 gap-4 md:gap-6 mb-10">
+  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mb-10">
     <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-xl text-center">
       <p className="text-xs font-bold text-primary mb-1 uppercase">Tín chỉ</p>
       <p className="text-xl font-bold">{credits}</p>

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Breadcrumb, ContactInfoItem, SchematicMap } from '../components/PageComponents';
 import { Sidebar } from '../components/LayoutComponents';
@@ -8,8 +9,8 @@ const Contact: React.FC = () => {
     <>
       <Breadcrumb items={[{ label: 'Liên hệ' }]} />
       <div className="container mx-auto px-4 py-10">
-        <div className="flex flex-col lg:flex-row gap-8">
-          <div className="lg:w-3/4 space-y-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          <div className="lg:col-span-3 space-y-8">
             <div className="border-l-4 border-primary pl-4">
               <h2 className="text-3xl font-bold text-primary dark:text-white uppercase">Thông Tin Liên Hệ</h2>
               <p className="text-text-sub-light dark:text-text-sub-dark mt-2">Mọi thắc mắc và nhu cầu hỗ trợ, quý học viên vui lòng liên hệ theo các thông tin bên dưới.</p>
@@ -84,7 +85,9 @@ const Contact: React.FC = () => {
               </div>
             </div>
           </div>
-          <Sidebar className="lg:w-1/4" />
+          <div className="lg:col-span-1">
+            <Sidebar />
+          </div>
         </div>
       </div>
     </>
