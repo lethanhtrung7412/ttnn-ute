@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import { HashRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { Header, Footer } from './components/LayoutComponents';
@@ -12,6 +13,7 @@ import ToeicPreparation from './pages/ToeicPreparation';
 import VstepPreparation from './pages/VstepPreparation';
 import Japanese from './pages/Japanese';
 import Chinese from './pages/Chinese';
+import LearningResources from './pages/LearningResources';
 
 // Scroll to top on route change
 const ScrollToTop = () => {
@@ -43,6 +45,7 @@ const App: React.FC = () => {
             <Route path="/vstep" element={<VstepPreparation />} />
             <Route path="/japanese" element={<Japanese />} />
             <Route path="/chinese" element={<Chinese />} />
+            <Route path="/learning-resources" element={<LearningResources />} />
           </Routes>
         </main>
         <Footer />

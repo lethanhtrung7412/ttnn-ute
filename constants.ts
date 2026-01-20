@@ -1,4 +1,5 @@
-import { NewsItem, FacultyMember } from './types';
+
+import { NewsItem, FacultyMember, LearningResource, ResourceTag } from './types';
 
 export const NEWS_FEATURED: NewsItem[] = [
   {
@@ -139,3 +140,52 @@ export const DIRECTOR_INFO = {
   ],
   research: "Năng lực tự học; Phương pháp giảng dạy ngoại ngữ, và Ứng dụng công nghệ trong dạy và học ngôn ngữ."
 };
+
+// Mock data for Learning Resources (mimicking Strapi response)
+export const LEARNING_RESOURCES: LearningResource[] = [
+  {
+    id: 1,
+    title: "Cấu trúc bài thi VSTEP B1-B2-C1",
+    summary: "VSTEP (Vietnamese Standardized Test of English Proficiency) là bài thi đánh giá năng lực sử dụng tiếng Anh đầu tiên tại Việt Nam, được ra đời từ Đề án Ngoại ngữ Quốc gia 2020 với sự phát triển dựa trên khung tham chiếu Châu Âu (CEFR). Bài thi VSTEP hiện đang được tổ chức bởi nhiều trường đại học trọng điểm trên cả nước. Cấu trúc bài thi được thiết kế để đánh giá 4 kỹ năng cơ bản...",
+    date: "15/01/2026",
+    category: "VSTEP",
+    categoryColor: "bg-blue-50 dark:bg-blue-900/30 text-primary dark:text-blue-400",
+    slug: "cau-truc-bai-thi-vstep"
+  },
+  {
+    id: 2,
+    title: "Cấu trúc bài thi IELTS Học thuật",
+    summary: "Bài thi IELTS (International English Language Testing System) là một bài thi đánh giá trình độ tiếng Anh dành cho người nói tiếng Anh không phải là bản ngữ. IELTS được sử dụng rộng rãi cho mục đích học thuật, di cư và công việc. Bài thi đánh giá bốn kỹ năng chính: Nghe, Đọc, Viết và Nói...",
+    date: "12/01/2026",
+    category: "IELTS",
+    categoryColor: "bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400",
+    slug: "cau-truc-bai-thi-ielts"
+  },
+  {
+    id: 3,
+    title: "Cấu trúc bài thi TOEIC 4 kỹ năng",
+    summary: "Bài thi TOEIC (Test of English for International Communication) là một bài thi đánh giá khả năng tiếng Anh dành cho những người nói tiếng Anh không phải là bản ngữ, thường được sử dụng để đánh giá kỹ năng tiếng Anh trong môi trường kinh doanh hoặc công sở. Có hai loại bài thi TOEIC chính là loại 2 kỹ năng và loại 4 kỹ năng...",
+    date: "08/01/2026",
+    category: "TOEIC",
+    categoryColor: "bg-orange-50 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400",
+    slug: "cau-truc-bai-thi-toeic"
+  },
+  {
+    id: 4,
+    title: "Các cụm từ về thao tác lái xe trong Tiếng Anh",
+    summary: "Bạn có lái xe thường xuyên không? Bạn đã biết cách giải thích các thao tác lái xe bằng tiếng Anh chưa? Sau đây là một số cụm từ dùng để miêu tả các thao tác khi lái xe. Hãy cùng tìm hiểu nào. Những từ vựng này vô cùng hữu ích cho các học viên có nhu cầu làm việc trong môi trường quốc tế hoặc định cư...",
+    date: "05/01/2026",
+    category: "GIAO TIẾP",
+    categoryColor: "bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400",
+    slug: "cum-tu-lai-xe-tieng-anh"
+  }
+];
+
+export const RESOURCE_TAGS: ResourceTag[] = [
+  { label: "VSTEP", count: 12 },
+  { label: "IELTS", count: 8 },
+  { label: "TOEIC", count: 15 },
+  { label: "Giao tiếp", count: 21 },
+  { label: "Tiếng Nhật", count: 5 },
+  { label: "Tiếng Trung", count: 4 }
+];

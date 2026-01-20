@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
@@ -5,6 +6,7 @@ import {
   CalendarCheck, Facebook, Globe, Book, GraduationCap, Monitor, Languages, 
   Moon, Sun, Search, ArrowRight, Video, Newspaper, ChevronRight
 } from 'lucide-react';
+import { ResourceTag } from '../types';
 
 export const Header: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -43,7 +45,13 @@ export const Header: React.FC = () => {
       ] 
     },
     { name: "LỊCH HỌC", path: "#", subMenu: [] },
-    { name: "HỌC LIỆU", path: "#", subMenu: [] },
+    { 
+      name: "HỌC LIỆU", 
+      path: "#", 
+      subMenu: [
+        { name: "Tài liệu tham khảo", path: "/learning-resources" },
+      ] 
+    },
   ];
 
   return (
@@ -95,7 +103,7 @@ export const Header: React.FC = () => {
                     to={item.path} 
                     className="block px-4 py-4 hover:bg-white/10 transition flex items-center gap-1"
                   >
-                    {item.name} {(item.subMenu && item.subMenu.length > 0 || item.name !== "GIỚI THIỆU") && <ChevronDown size={14} />}
+                    {item.name} {(item.subMenu && item.subMenu.length > 0) && <ChevronDown size={14} />}
                   </Link>
                   {/* Dropdown Menu */}
                   {item.subMenu && item.subMenu.length > 0 && (
@@ -210,25 +218,52 @@ interface SidebarProps {
   showQuickNav?: boolean;
   className?: string;
   isSticky?: boolean;
+  tags?: ResourceTag[];
+  searchPlaceholder?: string;
+  title?: string;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ showQuickNav = false, className = "", isSticky = true }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ 
+  showQuickNav = false, 
+  className = "", 
+  isSticky = true,
+  tags,
+  searchPlaceholder = "Nhập từ khóa...",
+  title = "Tìm kiếm"
+}) => {
   return (
     <div className={`space-y-8 ${className}`}>
       <div className={`bg-white dark:bg-surface-dark p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 ${isSticky ? 'sticky top-24' : ''}`}>
         <h3 className="font-bold text-lg mb-4 text-text-main-light dark:text-text-main-dark flex items-center gap-2 border-l-4 border-primary pl-3">
-          Tìm kiếm
+          {title}
         </h3>
         <div className="relative mb-8">
           <input 
             type="text" 
-            placeholder="Nhập từ khóa..." 
+            placeholder={searchPlaceholder}
             className="w-full pl-4 pr-12 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-sm focus:ring-2 focus:ring-primary focus:border-transparent outline-none dark:text-white transition shadow-sm"
           />
           <button className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-primary text-white rounded-md hover:bg-blue-700 transition shadow-sm">
             <Search size={16} />
           </button>
         </div>
+
+        {tags && tags.length > 0 && (
+          <>
+             <h3 className="font-bold text-lg mb-4 text-text-main-light dark:text-text-main-dark border-l-4 border-primary pl-3">Chủ đề phổ biến</h3>
+             <div className="flex flex-wrap gap-2 mb-8">
+               {tags.map((tag, idx) => (
+                 <Link 
+                  key={idx} 
+                  to="#" 
+                  className="px-3 py-1.5 bg-gray-100 dark:bg-gray-800 hover:bg-primary hover:text-white rounded-md text-xs font-medium transition text-text-sub-light dark:text-text-sub-dark"
+                >
+                  {tag.label} {tag.count !== undefined && `(${tag.count})`}
+                 </Link>
+               ))}
+             </div>
+          </>
+        )}
 
         {showQuickNav && (
           <>
@@ -250,19 +285,16 @@ export const Sidebar: React.FC<SidebarProps> = ({ showQuickNav = false, classNam
           </>
         )}
 
-        <h3 className="font-bold text-lg mb-4 text-text-main-light dark:text-text-main-dark border-l-4 border-primary pl-3">Liên kết</h3>
+        <h3 className="font-bold text-lg mb-4 text-text-main-light dark:text-text-main-dark border-l-4 border-primary pl-3">Liên kết nhanh</h3>
         <ul className="space-y-3">
           {[
             { label: "Xem lịch học", icon: <CalendarCheck size={18} /> },
             { label: "Facebook Fanpage", icon: <Facebook size={18} /> },
-            { label: "Khoa Ngoại ngữ", icon: <Languages size={18} /> },
-            { label: "TT. Phát triển Ngôn ngữ", icon: <Globe size={18} /> },
-            { label: "TT. Tin học", icon: <Monitor size={18} /> },
             { label: "Thư viện", icon: <Book size={18} /> },
-            { label: "Trường ĐH SPKT TPHCM", icon: <GraduationCap size={18} /> },
+            { label: "Trường ĐH SPKT TPHCM", icon: <Globe size={18} /> },
           ].map((item, idx) => (
             <li key={idx}>
-              <a href="#" className="flex items-center gap-3 p-3 rounded-lg bg-blue-50 dark:bg-gray-700/50 hover:bg-blue-100 dark:hover:bg-gray-700 transition group">
+              <a href="#" className="flex items-center gap-3 p-3 rounded-lg bg-blue-50 dark:bg-gray-700/50 hover:bg-blue-100 dark:hover:bg-gray-700 transition group border border-transparent hover:border-blue-200 dark:hover:border-gray-600">
                 <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-primary dark:text-blue-300">
                   {item.icon}
                 </div>
@@ -278,9 +310,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ showQuickNav = false, classNam
             className="w-full h-full object-cover group-hover:scale-110 transition duration-500" 
             src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJUx4tntcdEjhjKFsHk1bw5J-EVG5RRMMFiTKZ2Qd0OPf4F8WIAwSRfmgLeABPwOvL572FLrVMDTt5M3Th4awtJ_tiOktUr7tsDQUZXgpLwJDYBVdCW-VbWam0zfVyj8aZaMeukiV7Zy3UKlu-LoIVsPOLGYpcegwk3lxyedK6N3MokLnx8GzNxty8OQnZNKt9gdZlrqak5BqCtyblyqtZxJ2PL8Q1qm7SVUTT1xuykm_YDZZT38KOzFtqvUUvR_naipty-YTR2VXo" 
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-4">
-            <span className="text-white font-bold text-sm">Học bổng Tiếng Anh</span>
-            <a href="#" className="text-xs text-yellow-400 font-bold uppercase mt-1">Tìm hiểu thêm →</a>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-4">
+            <span className="text-white font-bold text-base leading-tight">Học bổng Tiếng Anh 2026</span>
+            <a href="#" className="text-[10px] text-yellow-400 font-bold uppercase mt-1 tracking-widest">Khám phá ngay →</a>
           </div>
         </div>
       </div>

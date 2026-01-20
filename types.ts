@@ -1,3 +1,5 @@
+import React from 'react';
+
 export interface NewsItem {
   id: number;
   title: string;
@@ -26,4 +28,19 @@ export interface QuickLink {
   label: string;
   icon: React.ReactNode;
   path: string;
+}
+
+export interface LearningResource {
+  id: number;
+  title: string;
+  summary: string;
+  date: string;
+  category: string;
+  categoryColor: string; // TailWind class for badge bg/text
+  slug: string;
+}
+
+export interface ResourceTag {
+  label: string;
+  count?: number;
 }

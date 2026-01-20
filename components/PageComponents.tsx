@@ -1,10 +1,11 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
   ArrowRight, Clock, Eye, ChevronRight, CheckCircle, 
-  MapPin, Phone, Mail, Facebook 
+  MapPin, Phone, Mail, Facebook, ChevronsRight
 } from 'lucide-react';
-import { NewsItem, FacultyMember } from '../types';
+import { NewsItem, FacultyMember, LearningResource } from '../types';
 
 interface BreadcrumbProps {
   items: { label: string; path?: string }[];
@@ -89,6 +90,28 @@ export const FacultyCard: React.FC<{ member: FacultyMember }> = ({ member }) => 
       </p>
     </div>
   </div>
+);
+
+export const ResourceCard: React.FC<{ resource: LearningResource }> = ({ resource }) => (
+  <article className="bg-white dark:bg-surface-dark rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-md transition group">
+    <div className="p-6 md:p-8">
+      <div className="flex items-center gap-2 mb-3">
+        <span className={`px-2 py-1 text-[10px] font-bold uppercase rounded ${resource.categoryColor}`}>
+          {resource.category}
+        </span>
+        <span className="text-xs text-text-sub-light dark:text-text-sub-dark">{resource.date}</span>
+      </div>
+      <h2 className="text-2xl font-bold text-primary dark:text-blue-400 mb-4 group-hover:text-secondary transition">
+        {resource.title}
+      </h2>
+      <p className="text-text-main-light dark:text-text-main-dark leading-relaxed mb-6 line-clamp-3">
+        {resource.summary}
+      </p>
+      <Link to={`/resources/${resource.slug}`} className="inline-flex items-center text-secondary font-bold hover:gap-2 transition-all">
+        Xem chi tiết <ChevronsRight size={16} className="ml-1" />
+      </Link>
+    </div>
+  </article>
 );
 
 export const SchematicMap: React.FC = () => (
