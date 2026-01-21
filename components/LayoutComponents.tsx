@@ -12,7 +12,7 @@ const { Link: RouterLink, useLocation } = ReactRouterDOM;
 // Wrapper for Link to handle external links or placeholders if needed, 
 // though mostly we use it to wrap RouterLink for consistency with previous API
 const Link: React.FC<{ to: string; className?: string; children: React.ReactNode; onClick?: () => void }> = ({ to, className, children, onClick }) => {
-  const handleClick = (e: React.MouseEvent) => {
+  const handleClick = (_e: React.MouseEvent) => {
     if (onClick) {
       onClick();
     }
