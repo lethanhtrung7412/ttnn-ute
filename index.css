@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+/* Equivalent to darkMode: "class" 
+  This enables dark mode when the 'dark' class is present on a parent element.
+*/
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+    /* Colors */
+    --color-primary: #0054a6;
+    --color-secondary: #ce2029;
+    --color-background-light: #f3f4f6;
+    --color-background-dark: #111827;
+    --color-surface-light: #ffffff;
+    --color-surface-dark: #1f2937;
+    --color-text-main-light: #1f2937;
+    --color-text-main-dark: #f3f4f6;
+    --color-text-sub-light: #6b7280;
+    --color-text-sub-dark: #9ca3af;
+
+    /* Fonts */
+    --font-display: "Roboto", sans-serif;
+    --font-body: "Roboto", sans-serif;
+
+    /* Animations */
+    --animate-fade-in-up: fadeInUp 0.5s ease-out;
+
+    /* Keyframes */
+    @keyframes fadeInUp {
+        0% {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+}

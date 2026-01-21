@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Breadcrumb, CourseSidebarBtn, CourseHero, CourseStats } from '../components/PageComponents';
 import { Sidebar } from '../components/LayoutComponents';
-import { List, Notebook, Star, Trophy, Headphones, BookOpen, Send, Mic, FileSearch, ChartLine, CheckCircle } from 'lucide-react';
+import { List, Notebook, Star, Trophy, Headphones, BookOpen, Send, Mic, FileSearch, CheckCircle } from 'lucide-react';
 
 const ToeicPreparation: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'toeic450' | 'toeic500' | 'toeic550'>('toeic450');
@@ -219,7 +219,7 @@ const ToeicPreparation: React.FC = () => {
                           <p className="text-sm text-text-sub-light dark:text-text-sub-dark">Kỹ thuật liên kết thông tin giữa 3 văn bản khác nhau (hóa đơn, email, phản hồi). Rèn luyện tư duy phản biện để tránh các lỗi sai do chủ quan hoặc thiếu thông tin.</p>
                         </div>
                         <div className="border border-gray-100 dark:border-gray-700 rounded-lg p-5">
-                          <h4 className="font-bold mb-2 flex items-center gap-2"><ChartLine size={20} /> Business Contexts</h4>
+                          <h4 className="font-bold mb-2 flex items-center gap-2">Business Contexts</h4>
                           <p className="text-sm text-text-sub-light dark:text-text-sub-dark">Đi sâu vào các chủ đề: Hợp đồng kinh tế, Đàm phán thương mại, Báo cáo tài chính, Phân tích thị trường và Quản trị nhân sự cấp cao.</p>
                         </div>
                       </div>
