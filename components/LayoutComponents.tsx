@@ -221,15 +221,15 @@ export const Header: React.FC = () => {
 
       {/* Mobile Menu Overlay - Full Screen */}
       {isMobileMenuOpen && (
-        <div className="fixed inset-0 z-[200] bg-zinc-950 text-white flex flex-col animate-fade-in-up">
+        <div className="fixed inset-0 z-[200] bg-white dark:bg-zinc-950 text-gray-800 dark:text-white flex flex-col animate-fade-in-up">
           {/* Menu Header */}
-          <div className="flex items-center justify-between p-4 border-b border-white/10 bg-zinc-900">
+          <div className="flex items-center justify-between p-4 border-b border-gray-100 dark:border-white/10 bg-gray-50 dark:bg-zinc-900">
              <div className="flex items-center gap-2">
                 <span className="font-bold text-lg uppercase tracking-wider text-primary">Menu</span>
              </div>
              <button 
                 onClick={toggleMobileMenu}
-                className="p-2 bg-white/10 rounded-full hover:bg-white/20 transition text-white"
+                className="p-2 bg-gray-200 dark:bg-white/10 rounded-full hover:bg-gray-300 dark:hover:bg-white/20 transition text-gray-600 dark:text-white"
              >
                 <X size={24} />
              </button>
@@ -241,16 +241,16 @@ export const Header: React.FC = () => {
                 <li>
                   <Link 
                     to="/" 
-                    className={`block px-6 py-5 border-b border-white/5 hover:bg-white/5 transition flex items-center gap-3 text-base ${isActive('/') ? 'text-primary bg-white/5' : ''}`}
+                    className={`block px-6 py-5 border-b border-gray-100 dark:border-white/5 hover:bg-gray-50 dark:hover:bg-white/5 transition flex items-center gap-3 text-base ${isActive('/') ? 'text-primary bg-blue-50 dark:bg-white/5' : 'text-gray-600 dark:text-gray-300'}`}
                     onClick={toggleMobileMenu}
                   >
                     <Home size={20} className={isActive('/') ? "text-primary" : "text-gray-400"} /> Trang chủ
                   </Link>
                 </li>
                 {navItems.map((item, index) => (
-                  <li key={index} className="border-b border-white/5">
+                  <li key={index} className="border-b border-gray-100 dark:border-white/5">
                     <div 
-                      className={`flex justify-between items-center px-6 py-5 hover:bg-white/5 transition cursor-pointer text-base ${isParentActive(item) ? 'text-white' : 'text-gray-300'}`}
+                      className={`flex justify-between items-center px-6 py-5 hover:bg-gray-50 dark:hover:bg-white/5 transition cursor-pointer text-base ${isParentActive(item) ? 'text-primary dark:text-white' : 'text-gray-600 dark:text-gray-300'}`}
                       onClick={() => {
                         if (item.subMenu && item.subMenu.length > 0) {
                           toggleMobileSubMenu(item.name);
@@ -267,12 +267,12 @@ export const Header: React.FC = () => {
                     
                     {/* Mobile Submenu */}
                     {item.subMenu && item.subMenu.length > 0 && expandedMobileMenu === item.name && (
-                      <ul className="bg-zinc-900 border-t border-white/5">
+                      <ul className="bg-gray-50 dark:bg-zinc-900 border-t border-gray-100 dark:border-white/5">
                         {item.subMenu.map((sub, subIndex) => (
                           <li key={subIndex}>
                             <Link
                               to={sub.path}
-                              className={`block pl-10 pr-6 py-4 hover:text-white hover:bg-white/5 transition text-sm border-l-4 ${isActive(sub.path) ? 'border-primary text-white bg-white/5' : 'border-transparent text-gray-400'}`}
+                              className={`block pl-10 pr-6 py-4 hover:text-primary dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 transition text-sm border-l-4 ${isActive(sub.path) ? 'border-primary text-primary dark:text-white bg-blue-50 dark:bg-white/5' : 'border-transparent text-gray-500 dark:text-gray-400'}`}
                               onClick={toggleMobileMenu}
                             >
                               {sub.name}
@@ -286,7 +286,7 @@ export const Header: React.FC = () => {
                 <li>
                   <Link 
                     to="/contact" 
-                    className={`block px-6 py-5 hover:bg-white/5 transition flex items-center gap-3 text-base ${isActive('/contact') ? 'text-primary bg-white/5' : ''}`}
+                    className={`block px-6 py-5 hover:bg-gray-50 dark:hover:bg-white/5 transition flex items-center gap-3 text-base ${isActive('/contact') ? 'text-primary bg-blue-50 dark:bg-white/5' : 'text-gray-600 dark:text-gray-300'}`}
                     onClick={toggleMobileMenu}
                   >
                     <MapPin size={20} className={isActive('/contact') ? "text-primary" : "text-gray-400"} /> LIÊN HỆ
@@ -296,8 +296,8 @@ export const Header: React.FC = () => {
           </div>
 
           {/* Menu Footer (Contact Info) */}
-          <div className="p-6 border-t border-white/10 bg-zinc-900">
-             <div className="space-y-3 text-sm text-gray-400">
+          <div className="p-6 border-t border-gray-100 dark:border-white/10 bg-gray-50 dark:bg-zinc-900">
+             <div className="space-y-3 text-sm text-gray-500 dark:text-gray-400">
                 <div className="flex items-center gap-3">
                    <PhoneCall size={16} className="text-primary" />
                    <span>Hotline: 0765 080 182</span>
@@ -307,11 +307,11 @@ export const Header: React.FC = () => {
                    <span>ttnn@hcmute.edu.vn</span>
                 </div>
              </div>
-             <div className="mt-4 pt-4 border-t border-white/10 flex justify-between items-center">
+             <div className="mt-4 pt-4 border-t border-gray-200 dark:border-white/10 flex justify-between items-center">
                  <span className="text-xs text-gray-500">© 2025 HCMUTE</span>
                  <div className="flex gap-3">
-                    <a href="#" className="text-gray-400 hover:text-white transition"><Facebook size={18} /></a>
-                    <a href="#" className="text-gray-400 hover:text-white transition"><Globe size={18} /></a>
+                    <a href="#" className="text-gray-400 hover:text-primary dark:hover:text-white transition"><Facebook size={18} /></a>
+                    <a href="#" className="text-gray-400 hover:text-primary dark:hover:text-white transition"><Globe size={18} /></a>
                  </div>
              </div>
           </div>
