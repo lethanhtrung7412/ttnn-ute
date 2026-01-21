@@ -1,8 +1,7 @@
 import React from 'react';
 import * as ReactRouterDOM from 'react-router-dom';
 import { 
-  ArrowRight, Clock, Eye, ChevronRight, CheckCircle, 
-  MapPin, Phone, Mail, Facebook, ChevronsRight
+  ArrowRight, Clock, Eye, ChevronRight, ChevronsRight
 } from 'lucide-react';
 import { NewsItem, FacultyMember, LearningResource } from '../types';
 

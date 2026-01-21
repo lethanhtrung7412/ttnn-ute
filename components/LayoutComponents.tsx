@@ -16,11 +16,12 @@ const Link: React.FC<{ to: string; className?: string; children: React.ReactNode
     if (onClick) {
       onClick();
     }
+    e.preventDefault();
   };
 
   if (to === '#' || to === '') {
     return (
-      <a href="#" className={className} onClick={(e) => { e.preventDefault(); handleClick(e); }}>
+      <a href="#" className={className} onClick={handleClick}>
         {children}
       </a>
     );
